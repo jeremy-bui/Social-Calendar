@@ -11,6 +11,7 @@ import { useContext, useState } from "react";
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import CreateReminder from "./Pages/CreateReminder";
+import CreateEvent from "./Pages/CreateEvent";
 
 function App() {
 
@@ -23,12 +24,14 @@ function App() {
           <UserContext.Provider value={{user,setUser}}>
             <Routes>
 
-              <Route path="/" element={<MainPage/>} />
+              <Route path="/" element={<LoginPage/>} />
               <Route path="/Reminders" element={<RemindersPage />} />
               <Route path="/Timeline" element={<TimelinePage/>} />
-              <Route path="/login" element={<LoginPage/>} />
+              <Route path="/Main" element={<MainPage/>} />
               <Route path="/EventDetails" element={<EventDetails/>} />
               <Route path="/CreateReminder" element={<CreateReminder/>} />
+
+              <Route path="/CreateEvent" element={<CreateEvent/>} />
             </Routes>
           </UserContext.Provider>
         </BrowserRouter>

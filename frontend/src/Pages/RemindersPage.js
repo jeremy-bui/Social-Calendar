@@ -22,14 +22,14 @@ function RemindersPage() {
             <h1 style={{textAlign:"center", margin:0}}> Reminders </h1>
 
             <p/>
-            <Link to = "/">
+            <Link to = "/Main">
                 <HomeIcon /> 
             </Link>
         </div>
         
         {reminders.map( reminder => {
             return(
-                <ReminderItem name={reminder.name} event = {reminder.event} date={reminder.date} time={reminder.time} organizer={reminder.organizer}/>
+                <ReminderItem name={reminder.name} event = {reminder.event} date={reminder.date} time={reminder.time} organizer={reminder.organizer} description={reminder.description}/>
             )
         })}
         

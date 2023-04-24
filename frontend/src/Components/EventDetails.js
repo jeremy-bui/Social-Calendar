@@ -70,7 +70,7 @@ const EventDetails = () =>{
             <h1 style={{textAlign:"center", margin:0}}> Event Details </h1>
 
             <p/>
-            <Link to = "/">
+            <Link to = "/Main">
                 <HomeIcon /> 
             </Link>
         </div>

@@ -19,7 +19,7 @@ function MainPage() {
         <div style ={{display:"grid", marginBottom:20, gridTemplateColumns:"1fr 1fr 1fr"}} >
             <p style={{margin:0}}></p>
             <h1 style={{textAlign:"center", margin:0}}> Home </h1>
-            <Link to="/login">
+            <Link to="/">
             <Button> Log out  <LogoutIcon/> </Button>
             </Link>
         </div>

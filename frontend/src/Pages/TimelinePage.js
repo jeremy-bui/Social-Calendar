@@ -25,7 +25,13 @@ function TimelinePage() {
             <p style={{margin:0}}></p>
             <h1 style={{textAlign:"center", margin:0}}> Timeline </h1>
             <p/>
-            <Link to ="/"> <HomeIcon /> </Link>
+            <Link to ="/Main"> <HomeIcon /> </Link>
+        </div>
+
+        <div style={{display:"flex",width:"100%", justifyContent:"center"}}>
+          <Link to="/CreateEvent">
+            <Button variant="outlined"> Create event </Button>
+          </Link>
         </div>
 
         {timelineItems.map( item => {

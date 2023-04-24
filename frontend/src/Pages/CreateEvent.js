@@ -8,19 +8,22 @@ import { useState, useContext } from "react";
 import { UserContext } from "../Contexts/userContext";
 import { TextField } from "@mui/material";
 
-const CreateReminder = (props) => {
+const CreateEvent = () => {
     const {user,setUser } = useContext(UserContext)
     const location = useLocation()
 
     const [name, setName] = useState("")
-    const [desc, setDesc] = useState("")
+    const [date, setDate] = useState("")
+    const [time, setTime] = useState("")
+    const [loc, setLoc] = useState("")
+
    
 
   return (
     <div className="App" style = {{width:"100%"}}>
         <div style ={{display:"grid", marginBottom:20, gridTemplateColumns:"1fr 1fr 0.7fr 0.3fr"}} >
             <p style={{margin:0}}></p>
-            <h1 style={{textAlign:"center", margin:0}}> Create Reminder </h1>
+            <h1 style={{textAlign:"center", margin:0}}> Create Event </h1>
 
             <p/>
             <Link to = "/Main">
@@ -29,18 +32,19 @@ const CreateReminder = (props) => {
         </div>
 
         <div style={{marginLeft:400}}>
-            <h3>Enter reminder name</h3>
+            <h3>Enter event name</h3>
             <TextField variant="outlined" onChange = { (e) => setName(e.target.value)}></TextField>
 
-            <h3 >Enter reminder Description</h3>
-            <TextField variant="outlined" onChange = { (e) => setDesc(e.target.value)}></TextField>
+            <h3 >Enter date location</h3>
+            <TextField variant="outlined" onChange = { (e) => setLoc(e.target.value)}></TextField>
 
-            <h3> Event: {location.state.event}</h3>
-            <h3> Date: {location.state.date} </h3>
-            <h3> Time: {location.state.time} </h3>
-            <h3> Organizer: {location.state.organizer} </h3>
+            <h3 >Enter date date</h3>
+            <TextField variant="outlined" onChange = { (e) => setDate(e.target.value)}></TextField>
 
-            <Button variant="outlined" onClick={() => alert("successfully added reminder! please return home")}> Submit </Button>
+            <h3 >Enter date time</h3>
+            <TextField variant="outlined" onChange = { (e) => setTime(e.target.value)}></TextField>
+
+            <Button variant="outlined" onClick={() => alert(name + loc + date + time + user)}> Submit </Button>
         </div>
         
         
@@ -48,4 +52,4 @@ const CreateReminder = (props) => {
   );
 }
 
-export default CreateReminder;
+export default CreateEvent;

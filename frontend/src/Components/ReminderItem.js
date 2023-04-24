@@ -20,7 +20,8 @@ const ReminderItem = (props) =>{
                             </div>
 
                             <div>
-                                <h5 style ={{height:"60%"}}>Reminder Description </h5>
+                                <h5>Reminder Description </h5>
+                                <h5 style ={{height:"40%"}}> {props.description} </h5>
                                 <Button>Remove reminder </Button>
                             </div>
                         </div>

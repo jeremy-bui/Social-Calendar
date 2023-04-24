@@ -37,7 +37,7 @@ function LoginPage() {
         <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
             <Button variant="outlined" onClick = {() => handleAuthenticate()}> Authenticate </Button>
             {!auth && <Button disabled variant="outlined" > Submit </Button>}
-            {auth && <Link to="/"> <Button variant="outlined" > Submit </Button> </Link>}
+            {auth && <Link to="/Main"> <Button variant="outlined" > Submit </Button> </Link>}
         </div>
 
     </div>
