@@ -7,12 +7,20 @@ import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../Contexts/userContext";
 
 
+import axios from 'axios'
+
 function MainPage() {
     const {user,setUser } = useContext(UserContext)
 
     useEffect(() =>{
         console.log("user is", user)
+
+        axios.get("http://localhost:5000/getAll")
+            .then( res => {
+                console.log(res.data)
+            })
     },[])
+
   return (
     <div className="App" style = {{width:"100%"}}>
 
