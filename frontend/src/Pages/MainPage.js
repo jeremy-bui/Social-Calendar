@@ -9,6 +9,7 @@ import { UserContext } from "../Contexts/userContext";
 
 import axios from 'axios'
 
+
 function MainPage() {
     const {user,setUser } = useContext(UserContext)
 

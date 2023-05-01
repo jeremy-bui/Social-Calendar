@@ -1,0 +1,9 @@
+SQL statements start here
+
+ALTER TABLE calendarevent ADD EVENT_DECRIPTION varchar(255);
+ALTER TABLE calendarevent ADD EVENT_LIKES int;
+ALTER TABLE calendarevent ADD EVENT_DISLIKES int;
+ALTER TABLE calendarevent ADD EVENT_LOVES int;
+ALTER TABLE calendarevent ADD EVENT_SAD int;
+
+ALTER TABLE calendarevent MODIFY COLUMN EVENT_DATE varchar(255);

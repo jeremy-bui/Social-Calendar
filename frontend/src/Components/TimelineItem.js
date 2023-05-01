@@ -1,7 +1,12 @@
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const TimelineItem = (props) =>{
+    useEffect(() =>{
+        console.log(props)
+    },[])
+
     return (
         <div>
             
@@ -19,7 +24,7 @@ const TimelineItem = (props) =>{
                         <h2>Event: {props.event}</h2>
                         
                         <Link to = "/EventDetails" state={{eventId: props.eventId}}>
-                            <Button variant = "outlined"> More details</Button>
+                            <Button variant = "outlined"> More details {props.eventId} </Button>
                         </Link>
 
 

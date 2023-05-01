@@ -3,22 +3,49 @@ import TimelineItem from "../Components/TimelineItem";
 import HomeIcon from '@mui/icons-material/Home';
 import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../Contexts/userContext";
 import { Link } from "react-router-dom";
 
+
+import axios from 'axios'
+    
 function LoginPage() {
+
+    
 
     const [login, setLogin] = useState("")
     const [password, setPassword ] = useState("")
     const [auth, setAuth] = useState(false)
+    const [allUsers, setAllUsers] = useState([])
 
     const { user,setUser } = useContext(UserContext)
 
+    useEffect(() =>{
+        console.log("user is", user)
+
+        axios.get("http://localhost:5000/getAll")
+            .then( res => {
+                console.log(res.data)
+                setAllUsers(res.data)
+            })
+    },[])
+
     function handleAuthenticate(){
         console.log(login, password)
-        setAuth(true)
-        setUser(login)
+
+        let authenticated = false
+
+        for (let i = 0 ; i < allUsers.length ; i++){
+            if (allUsers[i].USER_NAME === login && allUsers[i].PASSWORD === password){
+                authenticated = true
+                setUser(allUsers[i].USER_ID)
+            }
+        }
+
+        if (authenticated){
+            setAuth(true)
+        }
     }
 
   return (

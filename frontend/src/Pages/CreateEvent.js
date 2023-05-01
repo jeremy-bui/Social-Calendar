@@ -8,6 +8,8 @@ import { useState, useContext } from "react";
 import { UserContext } from "../Contexts/userContext";
 import { TextField } from "@mui/material";
 
+import axios from 'axios'
+
 const CreateEvent = () => {
     const {user,setUser } = useContext(UserContext)
     const location = useLocation()
@@ -16,8 +18,22 @@ const CreateEvent = () => {
     const [date, setDate] = useState("")
     const [time, setTime] = useState("")
     const [loc, setLoc] = useState("")
+    const [desc, setDesc] = useState("")
 
-   
+    function createEvent(){
+        axios.post("http://localhost:5000/createEvent",
+        {
+            name: "\"" + name + "\"",
+            desc: "\"" + desc + "\"",
+            date: "\"" + date + " " + time +"\"",
+            loc: "\"" + loc + "\"",
+            user: user,
+            likes: 0, 
+            dislikes: 0,
+            loves: 0,
+            sad: 0
+        })
+    }
 
   return (
     <div className="App" style = {{width:"100%"}}>
@@ -35,16 +51,19 @@ const CreateEvent = () => {
             <h3>Enter event name</h3>
             <TextField variant="outlined" onChange = { (e) => setName(e.target.value)}></TextField>
 
-            <h3 >Enter date location</h3>
+            <h3>Enter event description</h3>
+            <TextField variant="outlined" onChange = { (e) => setDesc(e.target.value)}></TextField>
+
+            <h3 >Enter event location</h3>
             <TextField variant="outlined" onChange = { (e) => setLoc(e.target.value)}></TextField>
 
-            <h3 >Enter date date</h3>
+            <h3 >Enter event date</h3>
             <TextField variant="outlined" onChange = { (e) => setDate(e.target.value)}></TextField>
 
-            <h3 >Enter date time</h3>
+            <h3 >Enter event time</h3>
             <TextField variant="outlined" onChange = { (e) => setTime(e.target.value)}></TextField>
 
-            <Button variant="outlined" onClick={() => alert(name + loc + date + time + user)}> Submit </Button>
+            <Button variant="outlined" onClick={() => createEvent()}> Submit </Button>
         </div>
         
         

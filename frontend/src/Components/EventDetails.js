@@ -9,8 +9,10 @@ import HomeIcon from '@mui/icons-material/Home';
 
 import { useLocation, Link } from "react-router-dom";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../Contexts/userContext";
+
+import axios from 'axios'
 
 const EventDetails = () =>{
     const location = useLocation()
@@ -22,6 +24,7 @@ const EventDetails = () =>{
     const attendees = [{name:"David A"}, {name:"Cade"}, {name:"JJ"}, {name:"Jeremey"}]
     const [comments, setComments] = useState([{username:"imap usay", text:"real", like:1, dislike: 2, love: 3, sad:4}, {username:"clancloss", text:"Can't make it, will be in hawaii", like:5, dislike: 4, love: 3, sad:4}])
 
+    const [event, setEvent] = useState({})
 
     function addComment(){
         console.log("username is ", user)
@@ -59,8 +62,17 @@ const EventDetails = () =>{
         shallowComments[index].sad += 1;
         setComments([...shallowComments]) 
         // TODO: send sad to db
+        console.log(event)
 
     }
+
+    useEffect(() =>{
+        console.log(location.state.eventId)
+        axios.post("http://localhost:5000/getEventById", {eventID: location.state.eventId})
+            .then(data => {
+                setEvent(data.data)
+            })
+    },[])
 
     return (
         <div>
@@ -81,12 +93,13 @@ const EventDetails = () =>{
                         
 
                         <div style ={{display:"grid", gridTemplateColumns:"1fr 1fr "}} >
-                            <h4>Date: 04/09/2023</h4>
-                            <h4> 09:00 PM</h4>
+                            <h4>Date: {event.EVENT_DATE}</h4>
+                            <h4> {event.EVENT_DATE}</h4>
 
-                            <h4> Organized By: David A</h4>
-                            <h4>Location: Armenia</h4>
+                            <h4> Organized By: {event.USER_NAME}</h4>
+                            <h4>Location: {event.EVENT_LOCATION}</h4>
                         </div>
+                        <h4> Description: {event.EVENT_DESC}</h4>
                     </div>
                     <h2>Attendees</h2>
                     <p>start list of attendees here</p>
