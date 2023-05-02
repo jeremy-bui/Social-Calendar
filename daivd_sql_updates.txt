@@ -7,3 +7,6 @@ ALTER TABLE calendarevent ADD EVENT_LOVES int;
 ALTER TABLE calendarevent ADD EVENT_SAD int;
 
 ALTER TABLE calendarevent MODIFY COLUMN EVENT_DATE varchar(255);
+
+INSERT INTO comment COLUMNS (...) values (10001, "hi how are uya", today's timestamp, 1, 0, 0, 0, 0);
+

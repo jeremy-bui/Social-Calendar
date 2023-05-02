@@ -8,6 +8,8 @@ import { useState, useContext } from "react";
 import { UserContext } from "../Contexts/userContext";
 import { TextField } from "@mui/material";
 
+import axios from "axios";
+
 const CreateReminder = (props) => {
     const {user,setUser } = useContext(UserContext)
     const location = useLocation()
@@ -15,6 +17,11 @@ const CreateReminder = (props) => {
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
    
+
+    function addToReminders(){
+        console.log("added to reminders")
+        axios.post("http://localhost:5000/addToReminders", {userId: user, eventId: location.state.eventId, reminderName: name, reminderDesc: desc})
+    }
 
   return (
     <div className="App" style = {{width:"100%"}}>
@@ -40,7 +47,7 @@ const CreateReminder = (props) => {
             <h3> Time: {location.state.time} </h3>
             <h3> Organizer: {location.state.organizer} </h3>
 
-            <Button variant="outlined" onClick={() => alert("successfully added reminder! please return home")}> Submit </Button>
+            <Button variant="outlined" onClick = { () => {addToReminders() }}> Submit </Button>
         </div>
         
         

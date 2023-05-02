@@ -36,40 +36,94 @@ function commaGenerator(arr){
 async function getPersonByID(userID){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT USER_NAME FROM person WHERE USER_ID =' + userID + ';')
+  connection.close()
+
   return rows[0];
 }
 
 async function getPeople(){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM person;')
+  connection.close()
+
   return rows;
 }
 
 async function getFirstPerson(){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM person WHERE USER_ID = 2;')
+  connection.close()
+
   return rows;
 }
 
 async function getEvents(){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM calendarevent;')
+  connection.close()
+
   return rows;
 }
 
 async function getEventById(eventID){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM calendarevent WHERE EVENT_ID =' + eventID +';')
+  connection.close()
+
   return rows[0];
 }
 
 async function createEvent(data){
   //console.log("data is ", data)
   const connection = await mysql.createConnection(dbconfig)
-  console.log("data is ", data)
-  let values = commaGenerator([data.desc, data.date, data.name, data.user, data.loc, data.likes, data.dislikes, data.loves, data.sad])
-  console.log(values)
-  await connection.execute('INSERT INTO calendarevent (EVENT_DESC, EVENT_DATE, EVENT_NAME, USER_ID, EVENT_LOCATION, EVENT_LIKES, EVENT_DISLIKES, EVENT_LOVES, EVENT_SAD) VALUES ('+ values + ');')
+  let values = commaGenerator([data.desc, data.date, data.name, data.user, data.loc])
+  await connection.execute('INSERT INTO calendarevent (EVENT_DESC, EVENT_DATE, EVENT_NAME, USER_ID, EVENT_LOCATION) VALUES ('+ values + ');')
+  connection.close()
+
+}
+
+async function getAttendeesById(eventId){
+  const connection = await mysql.createConnection(dbconfig)
+  let [rows, fields] = await connection.execute('SELECT USER_ID FROM attending WHERE EVENT_ID =' + eventId +';')
+  connection.close()
+
+  return rows;
+}
+
+async function attendEvent(userId, eventId){
+  const connection = await mysql.createConnection(dbconfig)
+  let [rows, fields] = await connection.execute('SELECT * FROM attending WHERE EVENT_ID =' + eventId +' AND USER_ID =' + userId +' ;')
+
+  if (rows.length ===0){
+    let values = commaGenerator([eventId, userId])
+    await connection.execute('INSERT INTO attending (EVENT_ID, USER_ID) VALUES (' + values +');')
+  }
+
+  connection.close()
+}
+
+async function getCommentsById(eventId){
+  const connection = await mysql.createConnection(dbconfig)
+  let [rows, fields] = await connection.execute('SELECT * FROM comment WHERE EVENT_ID =' + eventId +' ORDER BY COMM_DATE DESC;')
+  connection.close()
+
+  return rows;
+}
+
+async function updateComment( comm ){
+  const connection = await mysql.createConnection(dbconfig)
+  
+  await connection.execute('UPDATE comment SET COMM_LIKE = ' + comm.COMM_LIKE + ', COMM_DISLIKE ='+ comm.COMM_DISLIKE +', COMM_LOVE = '+ comm.COMM_LOVE +', COMM_SAD = '+ comm.COMM_SAD +' WHERE COMMENT_ID = ' + comm.COMMENT_ID +';')
+  connection.close()
+}
+
+async function addComment( comm ){
+  const connection = await mysql.createConnection(dbconfig)
+  
+  let values = commaGenerator([comm.USER_ID, '\'' + comm.COMM_DESC + '\'', "CURRENT_TIMESTAMP", comm.EVENT_ID, 0, 0, 0, 0]);
+
+  await connection.execute('INSERT INTO comment (USER_ID, COMM_DESC, COMM_DATE, EVENT_ID, COMM_LIKE, COMM_DISLIKE, COMM_LOVE, COMM_SAD) VALUES ('+ values +') ;')
+  connection.close()
 }
 
 
@@ -112,10 +166,8 @@ async function main(){
 
       for ( let i = 0 ; i < events.length ; i++){
         let username = await getPersonByID(events[i].USER_ID)
-        console.log(username['USER_NAME'])
         events[i]['USER_NAME'] = username['USER_NAME']
       }
-      console.log(events)
       res.send(events)
     })()
 
@@ -124,6 +176,8 @@ async function main(){
   app.post("/getEventById", jsonParser, (req,res) =>{
     (async() =>{
       console.log(req.body)
+
+      // req.body.
       let event = await getEventById(req.body.eventID)
 
       let username = await getPersonByID(event.USER_ID)
@@ -134,7 +188,61 @@ async function main(){
     })()
   })
 
+  app.post("/attendEvent", jsonParser, (req,res) =>{
+    (async() =>{
+      console.log("attending event: ")
+      console.log(req.body)
+      attendEvent(req.body.userId, req.body.eventId)
+    })()
+  })
+
+  app.post("/addToReminders", jsonParser, (req,res) =>{
+    (async() =>{
+      console.log("reminder added for user: ")
+      console.log(req.body)
+      
+    })()
+  })
+
+  app.post("/getAttendeesById", jsonParser, (req,res) =>{
+    (async() =>{
+      let attendees = await getAttendeesById(req.body.eventId)
+      
+
+      for (let i = 0 ; i < attendees.length ; i++){
+        attendees[i] = await getPersonByID(attendees[i].USER_ID)
+      }
+
+      res.send(attendees)
+    })()
+  })
+
+  app.post("/getCommentsById", jsonParser, (req,res) =>{
+    (async() =>{
+      let comments = await getCommentsById(req.body.eventId)
+      
+      for (let i = 0 ; i < comments.length ; i++){
+        let username = await getPersonByID(comments[i].USER_ID)
+        comments[i]['USER_NAME'] = username['USER_NAME']
+      }
+
+      console.log(comments)
+      res.send(comments)
+    })()
+  })
  
+  app.post("/updateComment", jsonParser, (req,res) =>{
+    (async() =>{
+      await updateComment(req.body)
+    })()
+  })
+
+  app.post("/addComment", jsonParser, (req,res) =>{
+    (async() =>{
+      await addComment(req.body)
+      res.send("comment added on the backend!")
+    })()
+  })
 
 
   app.listen(port,()=> console.log(`Listening to port ${port}`));

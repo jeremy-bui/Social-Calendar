@@ -48,6 +48,10 @@ function LoginPage() {
         }
     }
 
+    function createNew(){
+       // axios.post("http://localhost:5000/createNewUser", {username: login, password: password})
+    }
+
   return (
     <div className="App" style = {{width:"100%"}}>
         
@@ -65,6 +69,10 @@ function LoginPage() {
             <Button variant="outlined" onClick = {() => handleAuthenticate()}> Authenticate </Button>
             {!auth && <Button disabled variant="outlined" > Submit </Button>}
             {auth && <Link to="/Main"> <Button variant="outlined" > Submit </Button> </Link>}
+        </div>
+
+        <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
+        <Button variant="outlined" onClick = {() => createNew()}> Create new user </Button>
         </div>
 
     </div>
