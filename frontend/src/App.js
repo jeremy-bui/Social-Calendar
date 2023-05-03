@@ -7,11 +7,14 @@ import MainPage from "./Pages/MainPage";
 import LoginPage from "./Pages/LoginPage";
 
 import { UserContext } from "./Contexts/userContext";
+import { AdminContext } from "./Contexts/adminContext";
 import { useContext, useState } from "react";
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import CreateReminder from "./Pages/CreateReminder";
 import CreateEvent from "./Pages/CreateEvent";
+import CreateNewUser from "./Pages/CreateNewUser";
+import ViewUsers from "./Pages/ViewUsers";
 
 function App() {
 
@@ -22,6 +25,7 @@ function App() {
         <BrowserRouter>
 
           <UserContext.Provider value={{user,setUser}}>
+          <AdminContext.Provider value={{user,setUser}}>
             <Routes>
 
               <Route path="/" element={<LoginPage/>} />
@@ -32,7 +36,11 @@ function App() {
               <Route path="/CreateReminder" element={<CreateReminder/>} />
 
               <Route path="/CreateEvent" element={<CreateEvent/>} />
+              <Route path="/CreateNewUser" element={<CreateNewUser/>} />
+              <Route path="/ViewUsers" element={<ViewUsers/>} />
+
             </Routes>
+          </AdminContext.Provider>
           </UserContext.Provider>
         </BrowserRouter>
     </div>

@@ -10,22 +10,22 @@ import { Link } from "react-router-dom";
 
 import axios from 'axios'
     
-function LoginPage() {
+function CreateNewUser() {
 
     
 
     const [login, setLogin] = useState("")
     const [password, setPassword ] = useState("")
+    const [fname, setFname] = useState("")
+    const [lname, setLname] = useState("")
+    const [userType, setUserType] = useState("")
+
     const [auth, setAuth] = useState(false)
-    const [admin, setAdmin] = useState(false)
     const [allUsers, setAllUsers] = useState([])
 
     const { user,setUser } = useContext(UserContext)
 
-
     useEffect(() =>{
-        setAdmin(false)
-
         console.log("user is", user)
 
         axios.get("http://localhost:5000/getAll")
@@ -44,9 +44,6 @@ function LoginPage() {
             if (allUsers[i].USER_NAME === login && allUsers[i].PASSWORD === password){
                 authenticated = true
                 setUser(allUsers[i].USER_ID)
-                if (allUsers[i].USER_TYPE === 1){
-                    setAdmin(true)
-                }
             }
         }
 
@@ -55,7 +52,28 @@ function LoginPage() {
         }
     }
 
-   
+    function createNew(){
+
+        let valid = true
+
+        for (let i = 0 ; i < allUsers.length ; i++){
+            if (allUsers[i].USER_NAME === login){
+                valid = false
+            }
+        }
+
+        if (!valid){
+            alert("username taken! please enter a different username")
+        }
+        else {
+            let shallowUser = 0
+            if (userType === 1){
+                shallowUser = 1
+            }
+            axios.post("http://localhost:5000/createPerson", {username: login, password: password, userFname: fname, userLname: lname, userType: userType})
+        }
+       
+    }
 
   return (
     <div className="App" style = {{width:"100%"}}>
@@ -71,34 +89,24 @@ function LoginPage() {
         </div>
 
         <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
-            <Button variant="outlined" onClick = {() => handleAuthenticate()}> Authenticate </Button>
-            {!auth && <Button disabled variant="outlined" > Submit </Button>}
-            {auth && <Link to="/Main"> <Button variant="outlined" > Submit </Button> </Link>}
+            <TextField label="First Name" variant="outlined" onChange = {(e) => setFname(e.target.value)}/>
         </div>
 
         <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
-            <Link to ="/CreateNewUser">
-                <Button variant="outlined" > Create new user </Button>
-            </Link>
+            <TextField label="Last Name" variant="outlined" onChange = {(e) => setLname(e.target.value)}/>
         </div>
 
         <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
-            <Link to ="/ChangePassword">
-                <Button variant="outlined" > Change password </Button>
-            </Link>
+            <TextField label="User Type (set 1 for admin)" variant="outlined" onChange = {(e) => setUserType(e.target.value)}/>
         </div>
 
+
         <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
-            { !admin && <Button disabled variant="outlined" > Edit Users </Button>}
-            { admin && 
-            <Link to ="/ViewUsers">
-                <Button variant="outlined" > Edit Users </Button>
-            </Link>
-            }
+        <Button variant="outlined" onClick = {() => createNew()}> Create new user </Button>
         </div>
 
     </div>
   );
 }
 
-export default LoginPage;
+export default CreateNewUser;

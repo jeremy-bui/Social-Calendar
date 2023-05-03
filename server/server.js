@@ -127,8 +127,52 @@ async function addComment( comm ){
 }
 
 
-async function main(){
+// JJ's reminder functions
 
+async function getReminders(userId){
+  const connection = await mysql.createConnection(dbconfig)
+  let [rows, fields] = await connection.execute('SELECT * FROM reminder WHERE USER_ID =' + userId +';')
+  return rows;
+}
+
+async function getReminderById(remID){
+  const connection = await mysql.createConnection(dbconfig)
+  let [rows, fields] = await connection.execute('SELECT * FROM reminder WHERE REM_ID =' + remID +';')
+  return rows[0];
+}
+
+async function createReminder(data){
+  //console.log("data is ", data)
+  const connection = await mysql.createConnection(dbconfig)
+  console.log("data is ", data)
+  let values = commaGenerator([data.userID, data.eventID,'\'' + data.desc +'\'', '\'' + data.title + '\''])
+  console.log(values)
+  await connection.execute('INSERT INTO reminder (USER_ID, EVENT_ID, REM_DESC, REM_TITLE) VALUES ('+ values + ');')
+
+  connection.close()
+
+}
+
+async function deleteReminder(remId){
+  const connection = await mysql.createConnection(dbconfig)
+  await connection.execute('DELETE FROM reminder WHERE REM_ID = ' + remId +';')
+  connection.close()
+}
+
+
+// Jeremy's user functions
+
+async function createPerson(data){
+  
+  const connection = await mysql.createConnection(dbconfig)
+
+  let values = commaGenerator([ '\'' + data.username + '\'', '\'' + data.password + '\'', data.userType, '\'' + data.userFname + '\'', '\'' + data.userLname + '\'', "CURRENT_TIMESTAMP"])
+  await connection.execute('INSERT INTO person (USER_NAME, PASSWORD, USER_TYPE, USER_FNAME, USER_LNAME, DATE_MADE) VALUES ('+ values + ');')
+  connection.close()
+
+}
+
+async function main(){
 
   app.get("/getOnePerson", (req,res) =>{
 
@@ -196,14 +240,6 @@ async function main(){
     })()
   })
 
-  app.post("/addToReminders", jsonParser, (req,res) =>{
-    (async() =>{
-      console.log("reminder added for user: ")
-      console.log(req.body)
-      
-    })()
-  })
-
   app.post("/getAttendeesById", jsonParser, (req,res) =>{
     (async() =>{
       let attendees = await getAttendeesById(req.body.eventId)
@@ -241,6 +277,52 @@ async function main(){
     (async() =>{
       await addComment(req.body)
       res.send("comment added on the backend!")
+    })()
+  })
+
+  app.post("/getReminders", jsonParser, (req,res) =>{
+
+    (async() =>{
+      console.log(req.body)
+      let reminders = await getReminders(req.body.userId)
+
+      for (let i = 0 ; i < reminders.length ; i++){
+        
+
+        let event = await getEventById(reminders[i].EVENT_ID)
+        reminders[i]['EVENT_NAME'] = event['EVENT_NAME']
+        reminders[i]['EVENT_DATE'] = event['EVENT_DATE']
+
+        let username = await getPersonByID(event['USER_ID'])
+        reminders[i]['USER_NAME'] = username['USER_NAME']
+      }
+
+      res.send(reminders)
+    })()
+  })
+
+  app.post("/deleteReminder", jsonParser, (req, res) => {
+    (async() =>{
+      console.log("deleting reminder")
+      console.log(req.body)
+      await deleteReminder(req.body.remID)
+    })()
+
+  })
+
+  app.post("/createReminder",jsonParser, (req,res) =>{
+    (async() =>{
+
+      createReminder(req.body)
+
+    })()
+
+  })
+
+  app.post("/createPerson", jsonParser, (req, res)=>
+  {
+    (async() =>{
+      createPerson(req.body)
     })()
   })
 

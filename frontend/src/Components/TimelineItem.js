@@ -18,7 +18,7 @@ const TimelineItem = (props) =>{
         axios.post("http://localhost:5000/attendEvent", {userId: user, eventId: props.eventId})
     }
 
-    
+  
 
     return (
         <div>

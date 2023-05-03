@@ -17,10 +17,11 @@ const CreateReminder = (props) => {
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
    
+    // <Link to="/CreateReminder" state={{eventId: props.eventId, event: props.event, date: props.date, time: props.time, organizer: props.organizer}}>
 
     function addToReminders(){
         console.log("added to reminders")
-        axios.post("http://localhost:5000/addToReminders", {userId: user, eventId: location.state.eventId, reminderName: name, reminderDesc: desc})
+        axios.post("http://localhost:5000/createReminder", {userID: user, eventID: location.state.eventId, title: name, desc: desc })
     }
 
   return (
