@@ -4,10 +4,12 @@ import { useEffect, useContext } from "react";
 import { UserContext } from "../Contexts/userContext";
 
 import axios from 'axios'
+import { AdminContext } from "../Contexts/adminContext";
 
 const TimelineItem = (props) =>{
 
     const {user,setUser } = useContext(UserContext)
+    const {admin, setAdmin} = useContext(AdminContext)
 
     useEffect(() =>{
         console.log(props)
@@ -18,6 +20,11 @@ const TimelineItem = (props) =>{
         axios.post("http://localhost:5000/attendEvent", {userId: user, eventId: props.eventId})
     }
 
+    function deleteEvent(eventId){
+        axios.post("http://localhost:5000/deleteEvent", {eventId: eventId})
+        alert("reopen page to see changes (DO NOT RELOAD)")
+
+    }
   
 
     return (
@@ -41,11 +48,24 @@ const TimelineItem = (props) =>{
                         </Link>
 
 
+
                         <h4>Location: {props.location}</h4>
-                        <p></p>
+
+                        {admin && 
+                        <Button variant = "outlined" style={{marginRight:20}} onClick={() => {deleteEvent(props.eventId)}}> Delete event {props.eventId} </Button>
+                        }
+
+                        {!admin && <p></p>}
+
                         <Link to="/CreateReminder" state={{eventId: props.eventId, event: props.event, date: props.date, time: props.time, organizer: props.organizer}}>
                             <Button variant = "outlined" > Add to Reminders</Button>
                         </Link>
+
+                        {admin && 
+                            <Link to = "/EditEvent" state={{eventId: props.eventId}}>
+                                <Button variant = "outlined" style={{marginRight:20}} > Edit event {props.eventId} </Button>
+                            </Link>
+                        }
 
                     </div>
                 </div>

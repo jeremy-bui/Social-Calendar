@@ -27,17 +27,28 @@ function ViewUsers() {
             })
     },[])
 
+    function deleteUser(userId){
+       // axios.post("http://localhost:5000/deletePerson", {personId: userId})
+       console.log("deleting user ", userId)
+    }
+
    
   return (
     <div className="App" style = {{width:"100%"}}>
         
         <h1 style={{textAlign:"center", margin:0}}> User list </h1>
 
-        {allUsers.map( user =>{
-            return(
-                <p>{user.USER_NAME}</p>
-            )
-        })}
+            {allUsers.map( user =>{
+                return(
+                    <div style = {{ display:"grid", gridTemplateColumns:"5fr 1fr 1fr 5fr", marginTop:10}}>
+                        <p></p>
+                        <p>{user.USER_NAME}</p>
+                        <Button variant = "outlined" style={{marginLeft:20}} onClick = { () => {deleteUser(user.USER_ID)} }> delete</Button>
+                        <p></p>
+                    </div>
+                )
+            })}
+
 
     </div>
   );

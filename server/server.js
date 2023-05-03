@@ -126,6 +126,12 @@ async function addComment( comm ){
   connection.close()
 }
 
+async function deleteComment( commId ){
+  const connection = await mysql.createConnection(dbconfig)
+  await connection.execute('DELETE FROM comment WHERE COMMENT_ID = ' + commId +';')
+  connection.close()
+}
+
 
 // JJ's reminder functions
 
@@ -170,6 +176,38 @@ async function createPerson(data){
   await connection.execute('INSERT INTO person (USER_NAME, PASSWORD, USER_TYPE, USER_FNAME, USER_LNAME, DATE_MADE) VALUES ('+ values + ');')
   connection.close()
 
+}
+
+
+async function updatePerson(person){
+  const connection = await mysql.createConnection(dbconfig)
+  await connection.execute('UPDATE person SET USER_NAME = ' + '\'' + person.newUsername + '\'' + ' WHERE USER_ID = ' + person.userId + ';')
+  connection.close()
+}
+
+async function deleteEvent(eventId){
+  const connection = await mysql.createConnection(dbconfig)
+
+  await connection.execute('DELETE FROM comment WHERE EVENT_ID = ' + eventId +';')
+  await connection.execute('DELETE FROM attending WHERE EVENT_ID = ' + eventId +';')
+  await connection.execute('DELETE FROM reminder WHERE EVENT_ID = ' + eventId +';')
+  await connection.execute('DELETE FROM calendarevent WHERE EVENT_ID = ' + eventId +';')
+  connection.close()
+}
+
+
+async function updateEvent(event){
+  console.log(event)
+  const connection = await mysql.createConnection(dbconfig)
+  await connection.execute('UPDATE calendarevent SET EVENT_NAME = ' + '\'' + event.EVENT_NAME + '\'' + ', EVENT_DESC = '+ '\'' + event.EVENT_DESC + '\'' + ', EVENT_DATE = '+ '\'' + event.EVENT_DATE + '\'' + ', EVENT_LOCATION = '+ '\'' + event.EVENT_LOCATION + '\'' + ' WHERE EVENT_ID = ' + event.EVENT_ID + ';')
+  connection.close()
+}
+
+async function updateReminder(reminder){
+  console.log(reminder)
+  const connection = await mysql.createConnection(dbconfig)
+  await connection.execute('UPDATE reminder SET REM_TITLE = ' + '\'' + reminder.title + '\'' + ', REM_DESC = '+ '\'' + reminder.desc + '\'' + ' WHERE REM_ID = ' + reminder.reminderId + ';')
+  connection.close()
 }
 
 async function main(){
@@ -280,6 +318,13 @@ async function main(){
     })()
   })
 
+  app.post("/deleteComment", jsonParser, (req,res) =>{
+    (async() =>{
+      await deleteComment(req.body.commentId)
+      res.send("comment deleted on the backend!")
+    })()
+  })
+
   app.post("/getReminders", jsonParser, (req,res) =>{
 
     (async() =>{
@@ -303,8 +348,6 @@ async function main(){
 
   app.post("/deleteReminder", jsonParser, (req, res) => {
     (async() =>{
-      console.log("deleting reminder")
-      console.log(req.body)
       await deleteReminder(req.body.remID)
     })()
 
@@ -326,6 +369,41 @@ async function main(){
     })()
   })
 
+
+  app.post('/updatePerson', jsonParser, (req, res) =>
+  {
+      (async() =>{
+        //console.log("changing usernasme")
+        await updatePerson(req.body)
+      })()
+    })
+
+    app.post("/deleteEvent", jsonParser, (req, res) => {
+      (async() =>{
+        console.log("deleting event")
+        console.log(req.body)
+        await deleteEvent(req.body.eventId)
+      })()
+  
+    })
+
+    app.post('/updateEvent', jsonParser, (req, res) =>
+    {
+      (async() =>{
+        //console.log("changing usernasme")
+        await updateEvent(req.body.event)
+        res.send("event updated!")
+      })()
+    })
+
+    app.post('/updateReminder', jsonParser, (req, res) =>
+    {
+      (async() =>{
+        //console.log("changing usernasme")
+        await updateReminder(req.body)
+        res.send("reminder updated!")
+      })()
+    })
 
   app.listen(port,()=> console.log(`Listening to port ${port}`));
 

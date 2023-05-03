@@ -13,12 +13,14 @@ import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../Contexts/userContext";
 
 import axios from 'axios'
+import { AdminContext } from "../Contexts/adminContext";
 
 const EventDetails = () =>{
     const location = useLocation()
     // then retrieve id by using id = location.state.eventId
 
     const {user, setUser} = useContext(UserContext)
+    const {admin, setAdmin} = useContext(AdminContext)
 
     const [currentComment, setCurrentComment] = useState("")
     const [attendees, setAttendees] = useState([])
@@ -36,7 +38,6 @@ const EventDetails = () =>{
             .then(() => {
                 axios.post("http://localhost:5000/getCommentsById", {eventId: location.state.eventId})
                     .then(data =>{
-                        console.log(data.data)
                         setComments(data.data)
                     })
             })
@@ -85,8 +86,20 @@ const EventDetails = () =>{
         axios.post("http://localhost:5000/updateComment", comments[index])
     }
 
+    function deleteComment(commentId){
+        console.log(" a comment is sent to be deleted")
+        axios.post("http://localhost:5000/deleteComment", {commentId:commentId})
+        .then( () =>{
+            axios.post("http://localhost:5000/getCommentsById", {eventId: location.state.eventId})
+                .then(data =>{
+                    setComments(data.data)
+                })
+        })
+
+    }
+
     useEffect(() =>{
-        console.log(location.state.eventId)
+        console.log("admin is,  ", admin)
         axios.post("http://localhost:5000/getEventById", {eventID: location.state.eventId})
             .then(data => {
                 setEvent(data.data)
@@ -180,6 +193,8 @@ const EventDetails = () =>{
                                     </div>
 
                                 </div>
+
+                                {admin && <Button variant="outlined" onClick = {() => {deleteComment(comment['COMMENT_ID'])}}> Delete Comment</Button>}
                             </div>
                         )
                     } )}

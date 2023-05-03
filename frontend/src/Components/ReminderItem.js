@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -27,8 +28,11 @@ const ReminderItem = (props) =>{
 
                             <div>
                                 <h5>Reminder Description </h5>
-                                <h5 style ={{height:"40%"}}> {props.description} </h5>
-                                <Button onClick = {() => deleteReminder(props.reminderId)}>Remove reminder </Button>
+                                <h5 style ={{height:"20%"}}> {props.description} </h5>
+                                <Link to = "/EditReminder" state={{reminderId: props.reminderId, name:props.name, description: props.description,event: props.event, date: props.date, organizer: props.organizer}}>
+                                    <Button variant ="outlined"> Edit Reminder</Button>
+                                </Link>
+                                <Button variant = "outlined" onClick = {() => deleteReminder(props.reminderId)}>Remove reminder </Button>
                             </div>
                         </div>
                     </div>

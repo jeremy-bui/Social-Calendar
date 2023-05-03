@@ -9,23 +9,21 @@ import { Link } from "react-router-dom";
 
 
 import axios from 'axios'
-import { AdminContext } from "../Contexts/adminContext";
     
-function LoginPage() {
+function ChangeUsername() {
 
     
 
     const [login, setLogin] = useState("")
     const [password, setPassword ] = useState("")
+    const [newUsername, setNewUsername] = useState("")
+
     const [auth, setAuth] = useState(false)
     const [allUsers, setAllUsers] = useState([])
 
     const { user,setUser } = useContext(UserContext)
-    const {admin, setAdmin} = useContext(AdminContext)
 
     useEffect(() =>{
-        setAdmin(false)
-
         console.log("user is", user)
 
         axios.get("http://localhost:5000/getAll")
@@ -37,16 +35,13 @@ function LoginPage() {
 
     function handleAuthenticate(){
         console.log(login, password)
-        setAdmin(false)
+
         let authenticated = false
 
         for (let i = 0 ; i < allUsers.length ; i++){
             if (allUsers[i].USER_NAME === login && allUsers[i].PASSWORD === password){
                 authenticated = true
                 setUser(allUsers[i].USER_ID)
-                if (allUsers[i].USER_TYPE === 1){
-                    setAdmin(true)
-                }
             }
         }
 
@@ -55,7 +50,14 @@ function LoginPage() {
         }
     }
 
-   
+    function changeUser(){
+        console.log("changing username")
+        axios.post("http://localhost:5000/updatePerson", {userId:user, newUsername: newUsername})
+        .then(() =>{
+            console.log("axios done")
+
+        })
+    }
 
   return (
     <div className="App" style = {{width:"100%"}}>
@@ -71,34 +73,20 @@ function LoginPage() {
         </div>
 
         <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
+            <TextField label="New Username" variant="outlined" onChange = {(e) => setNewUsername(e.target.value)}/>
+        </div>
+
+        
+
+
+        <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
             <Button variant="outlined" onClick = {() => handleAuthenticate()}> Authenticate </Button>
             {!auth && <Button disabled variant="outlined" > Submit </Button>}
-            {auth && <Link to="/Main"> <Button variant="outlined" > Submit </Button> </Link>}
-        </div>
-
-        <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
-            <Link to ="/CreateNewUser">
-                <Button variant="outlined" > Create new user </Button>
-            </Link>
-        </div>
-
-        <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
-            <Link to ="/ChangeUsername">
-                <Button variant="outlined" > Change username </Button>
-            </Link>
-        </div>
-
-        <div style={{display:"flex", justifyContent:"center", marginTop:10}}>
-            { !admin && <Button disabled variant="outlined" > Edit Users </Button>}
-            { admin && 
-            <Link to ="/ViewUsers">
-                <Button variant="outlined" > Edit Users </Button>
-            </Link>
-            }
+            {auth &&  <Button variant="outlined" onClick = {() => {changeUser()}}> Submit </Button> }
         </div>
 
     </div>
   );
 }
 
-export default LoginPage;
+export default ChangeUsername;
