@@ -210,6 +210,24 @@ async function updateReminder(reminder){
   connection.close()
 }
 
+async function deletePerson(personId){
+  const connection = await mysql.createConnection(dbconfig)
+
+  
+  await connection.execute('DELETE FROM comment WHERE USER_ID = ' + personId + ';')
+  await connection.execute('DELETE FROM attending WHERE USER_ID = ' + personId + ';')
+  await connection.execute('DELETE FROM reminder WHERE USER_ID = ' + personId + ';')
+
+  const [rows, fields] = await connection.execute('SELECT EVENT_ID FROM calendarevent WHERE USER_ID = ' + personId + ';')
+
+  for (let i = 0; i < rows.length; i++) {
+    await deleteEvent(rows[i].EVENT_ID)
+  }
+
+  await connection.execute('DELETE FROM person WHERE USER_ID = ' + personId +';')
+  connection.close()
+}
+
 async function main(){
 
   app.get("/getOnePerson", (req,res) =>{
@@ -403,6 +421,16 @@ async function main(){
         await updateReminder(req.body)
         res.send("reminder updated!")
       })()
+    })
+
+    app.post("/deletePerson", jsonParser, (req, res) => {
+      (async() =>{
+        console.log("deleting person")
+        console.log(req.body)
+        await deletePerson(req.body.personId)
+        res.send("delete complete")
+      })()
+  
     })
 
   app.listen(port,()=> console.log(`Listening to port ${port}`));

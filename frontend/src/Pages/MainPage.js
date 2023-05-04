@@ -17,9 +17,7 @@ function MainPage() {
         console.log("user is", user)
 
         axios.get("http://localhost:5000/getAll")
-            .then( res => {
-                console.log(res.data)
-            })
+
     },[])
 
   return (
@@ -43,7 +41,7 @@ function MainPage() {
             <p></p>
 
             <Link to = "/Reminders">
-                <div style = {{backgroundColor:"green", height:100, borderRadius:15}} onClick = { () => console.log("yeah")}>
+                <div style = {{backgroundColor:"green", height:100, borderRadius:15}} >
                     <h2 style={{textAlign:"center", color:"white"}}> Reminders </h2>
                 </div>
             </Link>

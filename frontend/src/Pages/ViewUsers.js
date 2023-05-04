@@ -28,8 +28,16 @@ function ViewUsers() {
     },[])
 
     function deleteUser(userId){
-       // axios.post("http://localhost:5000/deletePerson", {personId: userId})
+       axios.post("http://localhost:5000/deletePerson", {personId: userId})
+        .then( () =>{
+            axios.get("http://localhost:5000/getAll")
+            .then( res => {
+                console.log(res.data)
+                setAllUsers(res.data)
+            })
+        })
        console.log("deleting user ", userId)
+
     }
 
    

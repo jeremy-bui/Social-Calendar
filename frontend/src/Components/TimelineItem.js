@@ -11,12 +11,8 @@ const TimelineItem = (props) =>{
     const {user,setUser } = useContext(UserContext)
     const {admin, setAdmin} = useContext(AdminContext)
 
-    useEffect(() =>{
-        console.log(props)
-    },[])
 
     function attendEvent(){
-        console.log("event attended")
         axios.post("http://localhost:5000/attendEvent", {userId: user, eventId: props.eventId})
     }
 
@@ -44,7 +40,7 @@ const TimelineItem = (props) =>{
                         <h2>Event: {props.event}</h2>
                         
                         <Link to = "/EventDetails" state={{eventId: props.eventId}}>
-                            <Button variant = "outlined"> More details {props.eventId} </Button>
+                            <Button variant = "outlined"> More details  </Button>
                         </Link>
 
 
@@ -52,7 +48,7 @@ const TimelineItem = (props) =>{
                         <h4>Location: {props.location}</h4>
 
                         {admin && 
-                        <Button variant = "outlined" style={{marginRight:20}} onClick={() => {deleteEvent(props.eventId)}}> Delete event {props.eventId} </Button>
+                        <Button variant = "outlined" style={{marginRight:20}} onClick={() => {deleteEvent(props.eventId)}}> Delete event  </Button>
                         }
 
                         {!admin && <p></p>}
@@ -63,7 +59,7 @@ const TimelineItem = (props) =>{
 
                         {admin && 
                             <Link to = "/EditEvent" state={{eventId: props.eventId}}>
-                                <Button variant = "outlined" style={{marginRight:20}} > Edit event {props.eventId} </Button>
+                                <Button variant = "outlined" style={{marginRight:20}} > Edit event </Button>
                             </Link>
                         }
 

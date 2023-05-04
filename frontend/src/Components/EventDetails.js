@@ -29,10 +29,7 @@ const EventDetails = () =>{
     const [event, setEvent] = useState({})
 
     function addComment(){
-        console.log("username is ", user)
         const newComment = {USER_ID: user, COMM_DESC: currentComment, COMM_LIKE:0, COMM_DISLIKE:0, COMM_LOVE:0, COMM_SAD:0, EVENT_ID: location.state.eventId}
-        // setComments( [ newComment, ...comments] )
-        // TODO: add comment to database here
 
         axios.post("http://localhost:5000/addComment", newComment)
             .then(() => {
@@ -45,44 +42,34 @@ const EventDetails = () =>{
     }
 
     function handleLike(index){
-        console.log("liked ", index, "comment")
         const shallowComments = [...comments]
         shallowComments[index].COMM_LIKE += 1;
         setComments([...shallowComments]) 
-        // TODO: send like to db
         updateComment(index)
 
     }
     function handleDislike(index){
-        console.log("disliked ", index, "comment")
         const shallowComments = [...comments]
         shallowComments[index].COMM_DISLIKE += 1;
         setComments([...shallowComments]) 
-        // TODO: send dislike to db
         updateComment(index)
 
     }
     function handleLove(index){
-        console.log("loved ", index, "comment")
         const shallowComments = [...comments]
         shallowComments[index].COMM_LOVE += 1;
         setComments([...shallowComments]) 
-        // TODO: send love to db
         updateComment(index)
 
     }
     function handleSad(index){
-        console.log("sad ", index, "comment")
         const shallowComments = [...comments]
         shallowComments[index].COMM_SAD += 1;
         setComments([...shallowComments]) 
-        // TODO: send sad to db
-        console.log(event)
         updateComment(index)
     }
 
     function updateComment(index){
-        console.log("a comment update has been sent")
         axios.post("http://localhost:5000/updateComment", comments[index])
     }
 
@@ -99,7 +86,6 @@ const EventDetails = () =>{
     }
 
     useEffect(() =>{
-        console.log("admin is,  ", admin)
         axios.post("http://localhost:5000/getEventById", {eventID: location.state.eventId})
             .then(data => {
                 setEvent(data.data)
@@ -107,13 +93,11 @@ const EventDetails = () =>{
 
         axios.post("http://localhost:5000/getAttendeesById", {eventId: location.state.eventId})
         .then(data =>{
-            console.log(data.data)
             setAttendees(data.data)
         })
 
         axios.post("http://localhost:5000/getCommentsById", {eventId: location.state.eventId})
         .then(data =>{
-            console.log(data.data)
             setComments(data.data)
         })
 
@@ -167,10 +151,6 @@ const EventDetails = () =>{
                                 <p style ={{margin:0, marginBottom:10}}>{comment['COMM_DESC']}</p>
 
                                 <div style = {{display:"flex"}}>
-                                    {/* <ThumbUpOffAltIcon onClick = {() => {console.log("hi")}}/>
-                                    <ThumbDownOffAltIcon onClick = {() => {console.log("hi")}}/>
-                                    <FavoriteBorderIcon/>
-                                    <SentimentVeryDissatisfiedIcon/> */}
                                     <div>
                                         
                                         <ThumbUpOffAltIcon onClick={() => handleLike(index)}/>
