@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const ReminderItem = (props) =>{
-    const attendees = [{"name":"David A"}, {"name":"Cade"}, {"name":"JJ"}, {"name":"Jeremey"}]
+    const attendees = [{"name":"David A"}, {"name":"Cade"}, {"name":"JJ"}, {"name":"Jeremy"}]
     const comments = [{"username":"imap usay", "text":"real"}, {"username":"clancloss", "text":"Can't make it, will be in hawaii"}]
 
+    // Call Axios function to delete a Reminder
     function deleteReminder( reminderId){
         axios.post("http://localhost:5000/deleteReminder", {remID: reminderId})
         alert("please reload the page to see changes")

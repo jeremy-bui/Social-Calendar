@@ -6,16 +6,18 @@ import { UserContext } from "../Contexts/userContext";
 import axios from 'axios'
 import { AdminContext } from "../Contexts/adminContext";
 
+// Renders the webpage for all CalendarEvents
 const TimelineItem = (props) =>{
 
     const {user,setUser } = useContext(UserContext)
     const {admin, setAdmin} = useContext(AdminContext)
 
-
+    // Call Axios function to attend a CalendarEvent as a Person
     function attendEvent(){
         axios.post("http://localhost:5000/attendEvent", {userId: user, eventId: props.eventId})
     }
 
+    // Call Axios function to delete a CalendarEvent
     function deleteEvent(eventId){
         axios.post("http://localhost:5000/deleteEvent", {eventId: eventId})
         alert("reopen page to see changes (DO NOT RELOAD)")

@@ -15,19 +15,20 @@ import { UserContext } from "../Contexts/userContext";
 import axios from 'axios'
 import { AdminContext } from "../Contexts/adminContext";
 
+
 const EventDetails = () =>{
     const location = useLocation()
     // then retrieve id by using id = location.state.eventId
 
+    // State hooks for handling all attachments to a CalendarEvent
     const {user, setUser} = useContext(UserContext)
     const {admin, setAdmin} = useContext(AdminContext)
-
     const [currentComment, setCurrentComment] = useState("")
     const [attendees, setAttendees] = useState([])
     const [comments, setComments] = useState([])
-
     const [event, setEvent] = useState({})
 
+    // Call Axios functions to add a Comment to a CalendarEvent
     function addComment(){
         const newComment = {USER_ID: user, COMM_DESC: currentComment, COMM_LIKE:0, COMM_DISLIKE:0, COMM_LOVE:0, COMM_SAD:0, EVENT_ID: location.state.eventId}
 
@@ -41,6 +42,7 @@ const EventDetails = () =>{
         alert("success! reopen the page to see the new comment")
     }
 
+    // Update the LIKES when clicked
     function handleLike(index){
         const shallowComments = [...comments]
         shallowComments[index].COMM_LIKE += 1;
@@ -48,6 +50,8 @@ const EventDetails = () =>{
         updateComment(index)
 
     }
+
+    // Update the DISLIKES when clicked
     function handleDislike(index){
         const shallowComments = [...comments]
         shallowComments[index].COMM_DISLIKE += 1;
@@ -55,6 +59,8 @@ const EventDetails = () =>{
         updateComment(index)
 
     }
+
+    // Update the LOVES when clicked
     function handleLove(index){
         const shallowComments = [...comments]
         shallowComments[index].COMM_LOVE += 1;
@@ -62,6 +68,8 @@ const EventDetails = () =>{
         updateComment(index)
 
     }
+
+    // Update the SADS when clicked
     function handleSad(index){
         const shallowComments = [...comments]
         shallowComments[index].COMM_SAD += 1;
@@ -69,10 +77,12 @@ const EventDetails = () =>{
         updateComment(index)
     }
 
+    // Update the full comment when all components have been changed
     function updateComment(index){
         axios.post("http://localhost:5000/updateComment", comments[index])
     }
 
+    // Call Axios functions to delete the Comment from the CalendarEvent
     function deleteComment(commentId){
         console.log(" a comment is sent to be deleted")
         axios.post("http://localhost:5000/deleteComment", {commentId:commentId})
@@ -85,6 +95,7 @@ const EventDetails = () =>{
 
     }
 
+    // Update the page's CalendarEvents and Comments as well as Attendees 
     useEffect(() =>{
         axios.post("http://localhost:5000/getEventById", {eventID: location.state.eventId})
             .then(data => {
