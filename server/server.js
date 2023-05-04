@@ -6,7 +6,7 @@ const jsonParser = bodyParser.json();
 const app = express();
 const port = 5000;
 const cors = require("cors");
-//const path = require("path");
+
 const { json } = require('body-parser');
 app.use(cors());
 
@@ -21,6 +21,7 @@ let dbconfig = {
   database: '310project'
 }
 
+// Simple function for generating commas between values to be used in queries
 function commaGenerator(arr){
   let s = ""
 
@@ -33,6 +34,7 @@ function commaGenerator(arr){
   return s
 }
 
+// Return the USER_NAME of the Person given USER_ID
 async function getPersonByID(userID){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT USER_NAME FROM person WHERE USER_ID =' + userID + ';')
@@ -41,6 +43,7 @@ async function getPersonByID(userID){
   return rows[0];
 }
 
+// Return all Persons from the Person table
 async function getPeople(){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM person;')
@@ -49,6 +52,7 @@ async function getPeople(){
   return rows;
 }
 
+// Return the first Person from the Person table
 async function getFirstPerson(){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM person WHERE USER_ID = 2;')
@@ -57,6 +61,7 @@ async function getFirstPerson(){
   return rows;
 }
 
+// Return all CalendarEvents from the CalendarEvents table
 async function getEvents(){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM calendarevent;')
@@ -65,6 +70,7 @@ async function getEvents(){
   return rows;
 }
 
+// Return the CalendarEvent given an EVENT_ID
 async function getEventById(eventID){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM calendarevent WHERE EVENT_ID =' + eventID +';')
@@ -73,8 +79,8 @@ async function getEventById(eventID){
   return rows[0];
 }
 
+// Create a CalendarEvent given EVENT_DESC, EVENT_DATE, EVENT_NAME, USER_ID, EVENT_LOCATION
 async function createEvent(data){
-  //console.log("data is ", data)
   const connection = await mysql.createConnection(dbconfig)
   let values = commaGenerator([data.desc, data.date, data.name, data.user, data.loc])
   await connection.execute('INSERT INTO calendarevent (EVENT_DESC, EVENT_DATE, EVENT_NAME, USER_ID, EVENT_LOCATION) VALUES ('+ values + ');')
@@ -82,6 +88,7 @@ async function createEvent(data){
 
 }
 
+// Return Attendees to a CalendarEvent given EVENT_ID
 async function getAttendeesById(eventId){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT USER_ID FROM attending WHERE EVENT_ID =' + eventId +';')
@@ -90,6 +97,7 @@ async function getAttendeesById(eventId){
   return rows;
 }
 
+// Add a Person to a CalendarEvent in the Attendees table given their USER_ID and the EVENT_ID
 async function attendEvent(userId, eventId){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM attending WHERE EVENT_ID =' + eventId +' AND USER_ID =' + userId +' ;')
@@ -102,6 +110,7 @@ async function attendEvent(userId, eventId){
   connection.close()
 }
 
+// Return all Comments in a CalendarEvent given EVENT_ID
 async function getCommentsById(eventId){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM comment WHERE EVENT_ID =' + eventId +' ORDER BY COMM_DATE DESC;')
@@ -110,6 +119,7 @@ async function getCommentsById(eventId){
   return rows;
 }
 
+// Update a Comment's LIKES, DISKLIKES, LOVES, and SADS given the COMMENT
 async function updateComment( comm ){
   const connection = await mysql.createConnection(dbconfig)
   
@@ -117,6 +127,7 @@ async function updateComment( comm ){
   connection.close()
 }
 
+// Add a Comment to a CalendarEvent given the COMMENT
 async function addComment( comm ){
   const connection = await mysql.createConnection(dbconfig)
   
@@ -126,6 +137,7 @@ async function addComment( comm ){
   connection.close()
 }
 
+// Delete a Comment from the Comment table given the COMM_ID
 async function deleteComment( commId ){
   const connection = await mysql.createConnection(dbconfig)
   await connection.execute('DELETE FROM comment WHERE COMMENT_ID = ' + commId +';')
@@ -134,19 +146,21 @@ async function deleteComment( commId ){
 
 
 // JJ's reminder functions
-
+// Return the Reminders made by a Person given USER_ID
 async function getReminders(userId){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM reminder WHERE USER_ID =' + userId +';')
   return rows;
 }
 
+// Return the Reminders given a REM_ID
 async function getReminderById(remID){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM reminder WHERE REM_ID =' + remID +';')
   return rows[0];
 }
 
+// Create and add a Reminder given the information from the Person and their USER_ID & EVENT_ID
 async function createReminder(data){
   //console.log("data is ", data)
   const connection = await mysql.createConnection(dbconfig)
@@ -159,6 +173,7 @@ async function createReminder(data){
 
 }
 
+// Delete a Reminder given REM_ID
 async function deleteReminder(remId){
   const connection = await mysql.createConnection(dbconfig)
   await connection.execute('DELETE FROM reminder WHERE REM_ID = ' + remId +';')
@@ -167,7 +182,7 @@ async function deleteReminder(remId){
 
 
 // Jeremy's user functions
-
+// Create and add a Person given their information
 async function createPerson(data){
   
   const connection = await mysql.createConnection(dbconfig)
@@ -178,13 +193,15 @@ async function createPerson(data){
 
 }
 
-
+// Update a Person's USER_NAME given their USER_ID
 async function updatePerson(person){
   const connection = await mysql.createConnection(dbconfig)
   await connection.execute('UPDATE person SET USER_NAME = ' + '\'' + person.newUsername + '\'' + ' WHERE USER_ID = ' + person.userId + ';')
   connection.close()
 }
 
+// Delete a CalendarEvent given the EVENT_ID
+// Subsequently delete all associated links to the CalendarEvent as well
 async function deleteEvent(eventId){
   const connection = await mysql.createConnection(dbconfig)
 
@@ -195,7 +212,7 @@ async function deleteEvent(eventId){
   connection.close()
 }
 
-
+// Update a CalendarEvent given the CalendarEvent
 async function updateEvent(event){
   console.log(event)
   const connection = await mysql.createConnection(dbconfig)
@@ -203,6 +220,7 @@ async function updateEvent(event){
   connection.close()
 }
 
+// Update a Reminder given the Reminder
 async function updateReminder(reminder){
   console.log(reminder)
   const connection = await mysql.createConnection(dbconfig)
@@ -210,6 +228,7 @@ async function updateReminder(reminder){
   connection.close()
 }
 
+// Delete a Person and all attachments to the Person given the USER_ID
 async function deletePerson(personId){
   const connection = await mysql.createConnection(dbconfig)
 
@@ -228,8 +247,10 @@ async function deletePerson(personId){
   connection.close()
 }
 
+
 async function main(){
 
+  // Axios call to getFirstPerson()
   app.get("/getOnePerson", (req,res) =>{
 
     (async() =>{
@@ -240,6 +261,7 @@ async function main(){
 
   })
 
+  // Axios call to getPeople()
   app.get("/getAll", (req,res) =>{
 
     (async() =>{
@@ -250,6 +272,7 @@ async function main(){
 
   })
 
+  // Axios call to createEvent(Event)
   app.post("/createEvent",jsonParser, (req,res) =>{
     (async() =>{
 
@@ -259,6 +282,7 @@ async function main(){
 
   })
   
+  // Axios call to getEvents()
   app.get("/getEvents", (req,res) =>{
 
     (async() =>{
@@ -273,6 +297,7 @@ async function main(){
 
   })
 
+  // Axios call to getEventById(EVENT_ID)
   app.post("/getEventById", jsonParser, (req,res) =>{
     (async() =>{
       console.log(req.body)
@@ -288,6 +313,7 @@ async function main(){
     })()
   })
 
+  // Axios call to attendEvent(USER_ID, EVENT_ID)
   app.post("/attendEvent", jsonParser, (req,res) =>{
     (async() =>{
       console.log("attending event: ")
@@ -296,6 +322,7 @@ async function main(){
     })()
   })
 
+  // Axios call to getAttendeesById(EVENT_ID)
   app.post("/getAttendeesById", jsonParser, (req,res) =>{
     (async() =>{
       let attendees = await getAttendeesById(req.body.eventId)
@@ -309,6 +336,7 @@ async function main(){
     })()
   })
 
+  // Axios call to getCommentsById(EVENT_ID)
   app.post("/getCommentsById", jsonParser, (req,res) =>{
     (async() =>{
       let comments = await getCommentsById(req.body.eventId)
@@ -322,13 +350,15 @@ async function main(){
       res.send(comments)
     })()
   })
- 
+  
+  // Axios call to updateComment(Comment)
   app.post("/updateComment", jsonParser, (req,res) =>{
     (async() =>{
       await updateComment(req.body)
     })()
   })
 
+  // Axios call to addComment(Comment)
   app.post("/addComment", jsonParser, (req,res) =>{
     (async() =>{
       await addComment(req.body)
@@ -336,6 +366,7 @@ async function main(){
     })()
   })
 
+  // Axios call to deleteComment(COMM_ID)
   app.post("/deleteComment", jsonParser, (req,res) =>{
     (async() =>{
       await deleteComment(req.body.commentId)
@@ -343,6 +374,7 @@ async function main(){
     })()
   })
 
+  // Axios call to getReminders(USER_ID)
   app.post("/getReminders", jsonParser, (req,res) =>{
 
     (async() =>{
@@ -364,6 +396,7 @@ async function main(){
     })()
   })
 
+  // Axios call to deleteReminder(REM_ID)
   app.post("/deleteReminder", jsonParser, (req, res) => {
     (async() =>{
       await deleteReminder(req.body.remID)
@@ -371,6 +404,7 @@ async function main(){
 
   })
 
+  // Axios call to createReminder(Reminder)
   app.post("/createReminder",jsonParser, (req,res) =>{
     (async() =>{
 
@@ -380,6 +414,7 @@ async function main(){
 
   })
 
+  // Axios call to createPerson(Person)
   app.post("/createPerson", jsonParser, (req, res)=>
   {
     (async() =>{
@@ -387,51 +422,53 @@ async function main(){
     })()
   })
 
-
+  // Axios call to updatePerson(Person)
   app.post('/updatePerson', jsonParser, (req, res) =>
   {
       (async() =>{
-        //console.log("changing usernasme")
         await updatePerson(req.body)
       })()
-    })
+  })
 
-    app.post("/deleteEvent", jsonParser, (req, res) => {
-      (async() =>{
-        console.log("deleting event")
-        console.log(req.body)
-        await deleteEvent(req.body.eventId)
-      })()
-  
-    })
+  // Axios call to deleteEvent(EVENT_ID)
+  app.post("/deleteEvent", jsonParser, (req, res) => {
+    (async() =>{
+      console.log("deleting event")
+      console.log(req.body)
+      await deleteEvent(req.body.eventId)
+    })()
 
-    app.post('/updateEvent', jsonParser, (req, res) =>
-    {
-      (async() =>{
-        //console.log("changing usernasme")
-        await updateEvent(req.body.event)
-        res.send("event updated!")
-      })()
-    })
+  })
 
-    app.post('/updateReminder', jsonParser, (req, res) =>
-    {
-      (async() =>{
-        //console.log("changing usernasme")
-        await updateReminder(req.body)
-        res.send("reminder updated!")
-      })()
-    })
+  // Axios call to updateEvent(Event)
+  app.post('/updateEvent', jsonParser, (req, res) =>
+  {
+    (async() =>{
+      await updateEvent(req.body.event)
+      res.send("event updated!")
+    })()
+  })
 
-    app.post("/deletePerson", jsonParser, (req, res) => {
-      (async() =>{
-        console.log("deleting person")
-        console.log(req.body)
-        await deletePerson(req.body.personId)
-        res.send("delete complete")
-      })()
-  
-    })
+  // Axios call to updateReminder(Reminder)
+  app.post('/updateReminder', jsonParser, (req, res) =>
+  {
+    (async() =>{
+      //console.log("changing usernasme")
+      await updateReminder(req.body)
+      res.send("reminder updated!")
+    })()
+  })
+
+  // Axios call to deletePerson(USER_ID)
+  app.post("/deletePerson", jsonParser, (req, res) => {
+    (async() =>{
+      console.log("deleting person")
+      console.log(req.body)
+      await deletePerson(req.body.personId)
+      res.send("delete complete")
+    })()
+
+  })
 
   app.listen(port,()=> console.log(`Listening to port ${port}`));
 
