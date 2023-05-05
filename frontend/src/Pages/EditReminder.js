@@ -10,15 +10,20 @@ import { TextField } from "@mui/material";
 
 import axios from "axios";
 
+// an element which allows the user to edit a specific reminder
+// utilizes the reminder database
+// the user has the ability to change the name and descriptions of a reminder
+// they've created
 const EditReminder = (props) => {
+    // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)
     const location = useLocation()
 
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
-   
-    // <Link to="/CreateReminder" state={{eventId: props.eventId, event: props.event, date: props.date, time: props.time, organizer: props.organizer}}>
-    // state={{reminderId: props.reminderId, name:props.name, event: props.event, date: props.date, organizer: props.organizer}}
+    
+    // given a reminder id and the new contents of a reminder,
+    // updates the reminder within the database
     function updateReminder(){
         console.log("added to reminders")
         axios.post("http://localhost:5000/updateReminder", {reminderId: location.state.reminderId,title: name, desc: desc })

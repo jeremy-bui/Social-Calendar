@@ -9,15 +9,20 @@ import { UserContext } from "../Contexts/userContext";
 
 import axios from "axios";
 
+// a page which displays all of the
+// current user's reminders
+// utilizes the database to retrieve reminders
 function RemindersPage() {
+    
+    // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)
 
     const [reminders, setReminders] = useState([])
 
+    // gets all of the user's reminder given a user ID
     useEffect(() =>{
         axios.post("http://localhost:5000/getReminders", {userId: user})
             .then( data =>{
-                console.log(data.data)
                 setReminders(data.data)
             })
 

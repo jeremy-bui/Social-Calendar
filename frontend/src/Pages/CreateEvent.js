@@ -10,7 +10,11 @@ import { TextField } from "@mui/material";
 
 import axios from 'axios'
 
+// a page where a new event can be created
+// utilizes the event database
 const CreateEvent = () => {
+
+    // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)
     const location = useLocation()
 
@@ -20,6 +24,8 @@ const CreateEvent = () => {
     const [loc, setLoc] = useState("")
     const [desc, setDesc] = useState("")
 
+    // sends a request to the backend to create a new event
+    // given the name, description, date and location for the new event
     function createEvent(){
         axios.post("http://localhost:5000/createEvent",
         {

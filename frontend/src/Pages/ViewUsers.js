@@ -9,16 +9,19 @@ import { Link } from "react-router-dom";
 
 
 import axios from 'axios'
-    
+
+// a function that display all of the users that are registered in our website 
+// this allows the admin to view and delete users 
 function ViewUsers() {
 
     
 
     const [allUsers, setAllUsers] = useState([])
 
+    // retrieves the user ID of the user who is currently logged in
     const { user,setUser } = useContext(UserContext)
 
-
+    // retrieve all users
     useEffect(() =>{
         axios.get("http://localhost:5000/getAll")
             .then( res => {
@@ -27,6 +30,7 @@ function ViewUsers() {
             })
     },[])
 
+    // deletes a user given a user id
     function deleteUser(userId){
        axios.post("http://localhost:5000/deletePerson", {personId: userId})
         .then( () =>{

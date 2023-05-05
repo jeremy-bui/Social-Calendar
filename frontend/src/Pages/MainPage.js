@@ -8,11 +8,17 @@ import { UserContext } from "../Contexts/userContext";
 
 
 import axios from 'axios'
+import { ContentCutSharp } from "@mui/icons-material";
 
-
+// This is the page where a user will land immediately after logging in
+// it serves as a hub for the timeline and reminders pages
+// This page does not utilize a database to display any specific contents 
 function MainPage() {
+
+    // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)
 
+    // a funtion used to test that the user retrieved after login is correct
     useEffect(() =>{
         console.log("user is", user)
 

@@ -10,7 +10,10 @@ import { TextField } from "@mui/material";
 
 import axios from 'axios'
 
+// a page where an admin can update the details of an event
+// utilizes the events database
 const EditEvent = () => {
+    // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)
     const location = useLocation()
 
@@ -22,6 +25,7 @@ const EditEvent = () => {
 
     const[event, setEvent] =useState({})
 
+    // retrieves a specific event given an event ID
     useEffect(()=>{
         axios.post("http://localhost:5000/getEventById", {eventID: location.state.eventId})
             .then(data => {
@@ -30,6 +34,7 @@ const EditEvent = () => {
             })
     },[])
 
+    // handles changes made to the event by the user
     function editEvent(){
         let newEvent = {
             EVENT_NAME: name,
@@ -39,6 +44,7 @@ const EditEvent = () => {
             USER_ID: event.USER_ID,
             EVENT_ID: event.EVENT_ID
         }
+        // sends changes to the backend
         axios.post("http://localhost:5000/updateEvent", {event: newEvent})
         .then(() =>{
             alert("success! return to your timeline to see changes")

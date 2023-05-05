@@ -9,10 +9,11 @@ import { Link } from "react-router-dom";
 
 
 import axios from 'axios'
-    
+
+// a page where a new user can be created
+// utilizes the person database
 function CreateNewUser() {
 
-    
 
     const [login, setLogin] = useState("")
     const [password, setPassword ] = useState("")
@@ -23,35 +24,21 @@ function CreateNewUser() {
     const [auth, setAuth] = useState(false)
     const [allUsers, setAllUsers] = useState([])
 
+    // retrieves the user ID of the user who is currently logged in
     const { user,setUser } = useContext(UserContext)
 
+    // retrieves all users to ensure a repeated username is not selected
     useEffect(() =>{
         console.log("user is", user)
 
         axios.get("http://localhost:5000/getAll")
             .then( res => {
-                console.log(res.data)
                 setAllUsers(res.data)
             })
     },[])
 
-    function handleAuthenticate(){
-        console.log(login, password)
-
-        let authenticated = false
-
-        for (let i = 0 ; i < allUsers.length ; i++){
-            if (allUsers[i].USER_NAME === login && allUsers[i].PASSWORD === password){
-                authenticated = true
-                setUser(allUsers[i].USER_ID)
-            }
-        }
-
-        if (authenticated){
-            setAuth(true)
-        }
-    }
-
+    // creates a new user
+    // ensures that the login entered is not already in use
     function createNew(){
 
         let valid = true
@@ -70,6 +57,7 @@ function CreateNewUser() {
             if (userType === 1){
                 shallowUser = 1
             }
+            // creates a new user with the given login, password and user type
             axios.post("http://localhost:5000/createPerson", {username: login, password: password, userFname: fname, userLname: lname, userType: userType})
         }
        

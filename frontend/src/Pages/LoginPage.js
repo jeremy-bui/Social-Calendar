@@ -11,30 +11,34 @@ import { Link } from "react-router-dom";
 import axios from 'axios'
 import { AdminContext } from "../Contexts/adminContext";
     
+// the page where a user logs into the website
+// utilizes the person database to validate correct login
+// and password
 function LoginPage() {
-
-    
 
     const [login, setLogin] = useState("")
     const [password, setPassword ] = useState("")
     const [auth, setAuth] = useState(false)
     const [allUsers, setAllUsers] = useState([])
 
+    // retrieves the user ID of the user who is currently logged in
     const { user,setUser } = useContext(UserContext)
+
+    // checks if the user currently logged in is an admin or not
     const {admin, setAdmin} = useContext(AdminContext)
 
     useEffect(() =>{
         setAdmin(false)
 
         console.log("user is", user)
-
+        // gets all users from the backend
         axios.get("http://localhost:5000/getAll")
             .then( res => {
-                console.log(res.data)
                 setAllUsers(res.data)
             })
     },[])
 
+    // validates user's input with the users retrieved from DB
     function handleAuthenticate(){
         console.log(login, password)
         setAdmin(false)

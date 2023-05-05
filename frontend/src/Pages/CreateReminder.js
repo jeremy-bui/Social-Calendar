@@ -10,15 +10,20 @@ import { TextField } from "@mui/material";
 
 import axios from "axios";
 
+// a page where a user can create a new reminder
+// utilizes the reminder database
 const CreateReminder = (props) => {
+
+    // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)
     const location = useLocation()
 
     const [name, setName] = useState("")
     const [desc, setDesc] = useState("")
    
-    // <Link to="/CreateReminder" state={{eventId: props.eventId, event: props.event, date: props.date, time: props.time, organizer: props.organizer}}>
-
+    // sends a request to create a new reminder in the backend
+    // given a name for the reminder, the description for the reminder, the ID of the user creating it
+    // and the ID of the event for which the reminder is made
     function addToReminders(){
         console.log("added to reminders")
         axios.post("http://localhost:5000/createReminder", {userID: user, eventID: location.state.eventId, title: name, desc: desc })

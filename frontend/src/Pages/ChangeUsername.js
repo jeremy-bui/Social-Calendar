@@ -9,10 +9,11 @@ import { Link } from "react-router-dom";
 
 
 import axios from 'axios'
-    
-function ChangeUsername() {
 
-    
+// a page that allows a user to change their username
+// given their old username and password
+// utilizes the person database
+function ChangeUsername() {
 
     const [login, setLogin] = useState("")
     const [password, setPassword ] = useState("")
@@ -21,8 +22,10 @@ function ChangeUsername() {
     const [auth, setAuth] = useState(false)
     const [allUsers, setAllUsers] = useState([])
 
+    // retrieves the user ID of the user who is currently logged in
     const { user,setUser } = useContext(UserContext)
 
+    // retrieves all users to verify the enetered username and password
     useEffect(() =>{
         console.log("user is", user)
 
@@ -33,6 +36,7 @@ function ChangeUsername() {
             })
     },[])
 
+    // checks if the old login entered by the user matches records
     function handleAuthenticate(){
         console.log(login, password)
 
@@ -50,6 +54,8 @@ function ChangeUsername() {
         }
     }
 
+    // if a valid login is entered, sends a call to the database to update the username of the user
+    // given the user ID and a new username
     function changeUser(){
         console.log("changing username")
         axios.post("http://localhost:5000/updatePerson", {userId:user, newUsername: newUsername})

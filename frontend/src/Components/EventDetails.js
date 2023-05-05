@@ -15,7 +15,8 @@ import { UserContext } from "../Contexts/userContext";
 import axios from 'axios'
 import { AdminContext } from "../Contexts/adminContext";
 
-
+// a page that shows details of a specific event
+// utilizes the attending, calendarevent and comment databases
 const EventDetails = () =>{
     const location = useLocation()
     // then retrieve id by using id = location.state.eventId
@@ -95,7 +96,7 @@ const EventDetails = () =>{
 
     }
 
-    // Update the page's CalendarEvents and Comments as well as Attendees 
+    // Set the page's CalendarEvents and Comments as well as Attendees 
     useEffect(() =>{
         axios.post("http://localhost:5000/getEventById", {eventID: location.state.eventId})
             .then(data => {

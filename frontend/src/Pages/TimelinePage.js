@@ -8,26 +8,25 @@ import { UserContext } from "../Contexts/userContext";
 
 import axios from 'axios'
 
+// the page that displays all events, 
+// aka the user's timeline
+// utilizes the database to get events
 function TimelinePage() {
-
+  
+  // retrieves the user ID of the user who is currently logged in
   const {user,setUser } = useContext(UserContext)
+
   const [timelineItems, setTimelineItems] = useState([])
   const users = {}
 
+  // retrieves all events from the backend
   useEffect(() => {
     axios.get("http://localhost:5000/getEvents")
     .then( res => {
-        console.log(res.data)
         setTimelineItems(res.data)
     })
 
-    console.log("username in timeline is ", user)
   },[])
-
-  // const timelineItems = [
-  //   {eventId: 1, event:"party at david's house",date:"04/09/2023", time:"09:00 PM", organizer:"David A", location:"yeehaw"},
-  //   {eventId: 2, event:"csce 310 final proj", date:"04/09/2023", time:"09:00 PM", organizer:"Cade", location:"yahoo"}
-  // ]
 
   return (
     <div className="App" style = {{width:"100%"}}>
