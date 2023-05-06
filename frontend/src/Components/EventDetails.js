@@ -135,7 +135,7 @@ const EventDetails = () =>{
 
                         <div style ={{display:"grid", gridTemplateColumns:"1fr 1fr "}} >
                             <h4>Date: {event.EVENT_DATE}</h4>
-                            <h4> {event.EVENT_DATE}</h4>
+                            <h4></h4>
 
                             <h4> Organized By: {event.USER_NAME}</h4>
                             <h4>Location: {event.EVENT_LOCATION}</h4>

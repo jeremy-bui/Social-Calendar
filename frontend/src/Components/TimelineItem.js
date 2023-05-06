@@ -35,7 +35,7 @@ const TimelineItem = (props) =>{
 
                     <div style ={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr"}} >
                         <h4>Date: {props.date}</h4>
-                        <h4> {props.time}</h4>
+                        <h4></h4>
                         <Button  variant="outlined" onClick = { () => {attendEvent() }}> Click to Attend! </Button>
 
                         <h4> Organized By: {props.organizer}</h4>

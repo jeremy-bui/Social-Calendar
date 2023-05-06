@@ -42,7 +42,8 @@ const EditEvent = () => {
             EVENT_TIME: time, 
             EVENT_LOCATION: loc,
             USER_ID: event.USER_ID,
-            EVENT_ID: event.EVENT_ID
+            EVENT_ID: event.EVENT_ID, 
+            EVENT_DESC: desc
         }
         // sends changes to the backend
         axios.post("http://localhost:5000/updateEvent", {event: newEvent})

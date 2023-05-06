@@ -150,6 +150,8 @@ async function deleteComment( commId ){
 async function getReminders(userId){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM reminder WHERE USER_ID =' + userId +';')
+
+  connection.close()
   return rows;
 }
 
@@ -157,7 +159,10 @@ async function getReminders(userId){
 async function getReminderById(remID){
   const connection = await mysql.createConnection(dbconfig)
   let [rows, fields] = await connection.execute('SELECT * FROM reminder WHERE REM_ID =' + remID +';')
+  connection.close()
+
   return rows[0];
+
 }
 
 // Create and add a Reminder given the information from the Person and their USER_ID & EVENT_ID
