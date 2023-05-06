@@ -1,3 +1,9 @@
+// the page that displays all events, 
+// aka the user's timeline
+// utilizes the database to get events
+// Coded by David Asatryan and Jeremy Bui
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import HomeIcon from '@mui/icons-material/Home';
@@ -8,9 +14,7 @@ import { UserContext } from "../Contexts/userContext";
 
 import axios from 'axios'
 
-// the page that displays all events, 
-// aka the user's timeline
-// utilizes the database to get events
+
 function TimelinePage() {
   
   // retrieves the user ID of the user who is currently logged in

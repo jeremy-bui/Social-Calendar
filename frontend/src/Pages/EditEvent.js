@@ -1,3 +1,8 @@
+// a page where an admin can update the details of an event
+// utilizes the events database
+// Coded by David Asatryan and Jaejin Cha
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import ReminderItem from "../Components/ReminderItem";
@@ -10,8 +15,7 @@ import { TextField } from "@mui/material";
 
 import axios from 'axios'
 
-// a page where an admin can update the details of an event
-// utilizes the events database
+
 const EditEvent = () => {
     // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)

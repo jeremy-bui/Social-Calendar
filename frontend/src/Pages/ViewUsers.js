@@ -1,3 +1,8 @@
+// a function that display all of the users that are registered in our website 
+// this allows the admin to view and delete users 
+// Coded by David Asatryan
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import HomeIcon from '@mui/icons-material/Home';
@@ -10,8 +15,7 @@ import { Link } from "react-router-dom";
 
 import axios from 'axios'
 
-// a function that display all of the users that are registered in our website 
-// this allows the admin to view and delete users 
+
 function ViewUsers() {
 
     

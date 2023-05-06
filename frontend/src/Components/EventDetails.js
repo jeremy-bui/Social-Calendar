@@ -1,3 +1,7 @@
+// a page that shows details of a specific event
+// utilizes the attending, calendarevent and comment databases
+// Coded by David Asatryan and Jeremy Bui
+
 import { Button, TextField } from "@mui/material";
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
@@ -15,8 +19,6 @@ import { UserContext } from "../Contexts/userContext";
 import axios from 'axios'
 import { AdminContext } from "../Contexts/adminContext";
 
-// a page that shows details of a specific event
-// utilizes the attending, calendarevent and comment databases
 const EventDetails = () =>{
     const location = useLocation()
     // then retrieve id by using id = location.state.eventId

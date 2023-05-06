@@ -1,3 +1,9 @@
+// a page which displays all of the
+// current user's reminders
+// utilizes the database to retrieve reminders
+// Coded by David Asatryan and Cade Hanath-Culp
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import ReminderItem from "../Components/ReminderItem";
@@ -9,9 +15,7 @@ import { UserContext } from "../Contexts/userContext";
 
 import axios from "axios";
 
-// a page which displays all of the
-// current user's reminders
-// utilizes the database to retrieve reminders
+
 function RemindersPage() {
     
     // retrieves the user ID of the user who is currently logged in

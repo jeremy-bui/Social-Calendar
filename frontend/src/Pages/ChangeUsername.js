@@ -1,3 +1,8 @@
+// a page that allows a user to change their username
+// given their old username and password
+// utilizes the person database
+// Coded by David Asatryan 
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import HomeIcon from '@mui/icons-material/Home';
@@ -10,9 +15,7 @@ import { Link } from "react-router-dom";
 
 import axios from 'axios'
 
-// a page that allows a user to change their username
-// given their old username and password
-// utilizes the person database
+
 function ChangeUsername() {
 
     const [login, setLogin] = useState("")

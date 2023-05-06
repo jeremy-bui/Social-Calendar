@@ -1,3 +1,11 @@
+// an element which allows the user to edit a specific reminder
+// utilizes the reminder database
+// the user has the ability to change the name and descriptions of a reminder
+// they've created
+// Coded by David Asatryan and Cade Hanath-Culp
+
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import ReminderItem from "../Components/ReminderItem";
@@ -10,10 +18,7 @@ import { TextField } from "@mui/material";
 
 import axios from "axios";
 
-// an element which allows the user to edit a specific reminder
-// utilizes the reminder database
-// the user has the ability to change the name and descriptions of a reminder
-// they've created
+
 const EditReminder = (props) => {
     // retrieves the user ID of the user who is currently logged in
     const {user,setUser } = useContext(UserContext)
