@@ -1,3 +1,7 @@
+// Renders the webpage for all CalendarEvents
+// Coded by David Asatryan
+
+
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useEffect, useContext } from "react";
@@ -6,7 +10,7 @@ import { UserContext } from "../Contexts/userContext";
 import axios from 'axios'
 import { AdminContext } from "../Contexts/adminContext";
 
-// Renders the webpage for all CalendarEvents
+
 const TimelineItem = (props) =>{
 
     const {user,setUser } = useContext(UserContext)

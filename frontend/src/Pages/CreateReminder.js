@@ -1,3 +1,7 @@
+// a page where a user can create a new reminder
+// utilizes the reminder database
+// Coded by David Asatryan and Cade Hanath-Culp
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import ReminderItem from "../Components/ReminderItem";
@@ -10,8 +14,7 @@ import { TextField } from "@mui/material";
 
 import axios from "axios";
 
-// a page where a user can create a new reminder
-// utilizes the reminder database
+
 const CreateReminder = (props) => {
 
     // retrieves the user ID of the user who is currently logged in

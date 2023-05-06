@@ -1,3 +1,7 @@
+// a page where a new event can be created
+// utilizes the event database
+// Coded by David Asatryan and Jaejin Cha
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import ReminderItem from "../Components/ReminderItem";
@@ -10,8 +14,7 @@ import { TextField } from "@mui/material";
 
 import axios from 'axios'
 
-// a page where a new event can be created
-// utilizes the event database
+
 const CreateEvent = () => {
 
     // retrieves the user ID of the user who is currently logged in

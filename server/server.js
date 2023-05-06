@@ -1,3 +1,12 @@
+/*
+This file creates the backend connection to the database. Using Axios and MySQL, this communicates between the frontend and backend.
+David Asatryan - Coded the Person table functionality
+Jaejin Cha - Coded the CalendarEvent table functionality
+Jeremy Bui - Coded the Comment table functionality
+Cade Hanath-Culp - Coded the Reminder table functionality
+*/
+
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();

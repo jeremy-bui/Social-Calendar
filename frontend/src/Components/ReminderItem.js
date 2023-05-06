@@ -1,10 +1,13 @@
+// displays the details of a reminder
+// utilizes the reminder database
+// Coded by David Asatryan and Cade Hanath-Culp
+
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
 
-// displays the details of a reminder
-// utilizes the reminder database
+
 const ReminderItem = (props) =>{
 
     // Call Axios function to delete a Reminder

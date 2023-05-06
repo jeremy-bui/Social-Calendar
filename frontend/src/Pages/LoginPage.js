@@ -1,3 +1,9 @@
+// the page where a user logs into the website
+// utilizes the person database to validate correct login
+// and password
+// Coded by David Asatryan
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import HomeIcon from '@mui/icons-material/Home';
@@ -11,9 +17,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios'
 import { AdminContext } from "../Contexts/adminContext";
     
-// the page where a user logs into the website
-// utilizes the person database to validate correct login
-// and password
+
 function LoginPage() {
 
     const [login, setLogin] = useState("")

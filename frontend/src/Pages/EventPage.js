@@ -1,3 +1,7 @@
+// a wrapper components for the details of a particular event
+// Coded by David Asatryan and Jaejin Cha
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import HomeIcon from '@mui/icons-material/Home';
@@ -5,7 +9,7 @@ import { Button } from "@mui/material";
 import { useState, useContext } from "react";
 import { UserContext } from "../Contexts/userContext";
 
-// a wrapper components for the details of a particular event
+
 function EventPage() {
   
     // retrieves the user ID of the user who is currently logged in

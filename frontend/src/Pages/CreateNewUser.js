@@ -1,3 +1,8 @@
+// a page where a new user can be created
+// utilizes the person database
+// Coded by David Asatryan
+
+
 import EventDetails from "../Components/EventDetails";
 import TimelineItem from "../Components/TimelineItem";
 import HomeIcon from '@mui/icons-material/Home';
@@ -10,8 +15,7 @@ import { Link } from "react-router-dom";
 
 import axios from 'axios'
 
-// a page where a new user can be created
-// utilizes the person database
+
 function CreateNewUser() {
 
 
